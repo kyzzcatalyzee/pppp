@@ -1,0 +1,59 @@
+#pragma once
+#import <UIKit/UIKit.h>
+
+void LGLog(NSString *format, ...) NS_FORMAT_FUNCTION(1, 2);
+
+#if __has_include(<roothide.h>)
+#import <roothide.h>
+#else
+#ifndef jbroot
+#define jbroot(path) (path)
+#endif
+#endif
+
+id LGGlassPreferenceValue(NSString *key);
+void LGInvalidateGlassPreferenceCache(void);
+NSString *LGFilterTypeForHostPrefix(NSString *prefix);
+
+typedef NS_ENUM(NSInteger, LGGlassRimMode) {
+    LGGlassRimModeNone,
+    LGGlassRimModeBorder,
+    LGGlassRimModeGlass,
+};
+
+LGGlassRimMode LGGlassRimModeForFilterType(NSString *filterType);
+
+@interface LGLiveBackdropView : UIView
+
+@property (nonatomic, copy) NSString *lgFilterType;
+
+@property (nonatomic, copy) NSNumber *lgSpecularEnabledOverride;
+@property (nonatomic, copy) NSNumber *lgSpecularOpacityOverride;
+@property (nonatomic, copy) NSNumber *lgNativeBlurRadiusOverride;
+@property (nonatomic, copy) NSNumber *lgQualityScaleOverride;
+
+- (instancetype)initWithFrame:(CGRect)frame groupName:(NSString *)groupName;
+
+- (instancetype)initWithFrame:(CGRect)frame groupName:(NSString *)groupName
+                   filterType:(NSString *)filterType;
+@property (nonatomic, assign) CGRect lgShapeRect;
+@property (nonatomic, assign) CGFloat lgShapeCornerRadius;
+
+- (void)applyFilters;
+- (void)lgInvalidateFilterContents;
+- (BOOL)lgFilterAttached;
+- (void)updateSpecular;
+- (void)invalidateSpecularCache;
+- (void)reapplyFilterForParameterReload;
+
+@property (nonatomic, assign) CGFloat lgBackdropZoom;
+@end
+
+void LGInjectGlassIntoMaterialGroupType(UIView *materialView, const void *assocKey,
+                                        UIEdgeInsets outset, CGFloat cornerRadius,
+                                        NSString *groupName, NSString *filterType);
+
+void LGResyncGlassGeometry(UIView *materialView, const void *assocKey);
+void LGRemoveGlassFromMaterial(UIView *materialView, const void *assocKey);
+
+BOOL LGMaterialHasGlass(UIView *materialView, const void *assocKey);

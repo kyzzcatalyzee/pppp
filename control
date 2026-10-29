@@ -1,0 +1,9 @@
+Package: com.ngkhoi.liquidass27
+Name: Liquid (Gl)ass 27
+Version: 0.1.2t-27
+Architecture: iphoneos-arm
+Description: liquidass but 27
+Maintainer: ngkhoi, dylv
+Author: ngkhoi, dylv
+Section: Tweaks
+Depends: mobilesubstrate (>= 0.9.5000), firmware (>= 14.0), preferenceloader, com.opa334.altlist
